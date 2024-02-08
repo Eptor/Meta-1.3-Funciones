@@ -22,21 +22,37 @@ function initializeProcesses(numProcesses) {
     return processes;
 }
 
+function displayLine(processNumber, lineOfCode) {
+    const output = document.getElementById('output');
+    const line = document.createElement('p');
+    line.textContent = `Proceso ${processNumber}`;
+    line.textContent += `: ${lineOfCode}`;
+    output.appendChild(line);
+}
+
+function displaySeparator() {
+    const output = document.getElementById('output');
+    const separator = document.createElement('hr');
+    output.appendChild(separator);
+    
+}
+
 function simulateRoundRobin(processes) {
     let continueSimulation = true;
     while (continueSimulation) {
+        displaySeparator();
         continueSimulation = false;
-        console.log("\n" + "-".repeat(20) + "\n");
         for (const process of processes) {
             if (process.codeLines.length > 0) {
                 const lineOfCode = process.codeLines.shift();
-                console.log(`Proceso ${process.processNumber}\nLínea de código: ${lineOfCode}`);
+                displayLine(process.processNumber, lineOfCode);
                 continueSimulation = true;
             }
         }
     }
 }
 
-const numProcesses = process.argv[2];
-const processes = initializeProcesses(numProcesses);
-simulateRoundRobin(processes);
+document.addEventListener('DOMContentLoaded', () => {
+    const processes = initializeProcesses(5);
+    simulateRoundRobin(processes);
+});
